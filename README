@@ -1,0 +1,32 @@
+Project Name:   Potential Fields
+
+Description:    Agents employ path-finding techniques on their own by having
+                known areas of interest generate an attractive field very
+                similar to that seen in magnetic fields.  If agents need to
+                stay a certain distance away from a target, then the target
+                can give off a negative field in the desired region the agent
+                should stay away from, and then have a very positive field
+                emanating from the edges.  Agents themselves can give off a
+                very small field immediately around their occupied space,
+                forcing agents to space themselves appropriately.  These few
+                rules and suggestions, combined with pheromone trails,
+                backtracking, etc. allow for effective path-finding along with
+                very interesting emergent behavior that is seen as a side
+                affect of these implementations.
+                The particular goal of the agents is to destroy a given target
+                with ranged weaponry (lasers).
+
+########################
+Technical Details of Algorithm:
+                > Not quite yet decided as I will be experimenting with various
+                forms of data storage, agent behavior, and Potential Field
+                (PF) creation, modification, and types/number of fields.
+                > However, for right now the basic idea will be to have targets
+                give off a repelling field directly around their area, and then
+                a powerful attractive force outside of this area.  Agents
+                (or units) will move directly towards their target without any
+                backtracking, pheromone trails, or other aids aside from their
+                own small negative field to avoid collision with other
+                units (allies).
+This file was modified by IntelliJ IDEA 10.0.1 for binding GitHub repository
+This file was modified by IntelliJ IDEA 10.0.1 for binding GitHub repository
