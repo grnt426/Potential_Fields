@@ -1,0 +1,44 @@
+package com.kurtzg.potentfields;
+
+import java.util.ArrayList;
+
+/**
+ * Author:      Grant Kurtz
+ */
+public class FieldNode {
+
+    // instance variables
+    private ArrayList<FieldSource> sources;
+    private ArrayList<Charge> charges;
+    private double totalCharge;
+
+    // creates an empty source array
+    public FieldNode(){
+        sources = new ArrayList<FieldSource>();
+        charges = new ArrayList<Charge>();
+        totalCharge = 0.0;
+    }
+
+    public double getTotalCharge(){
+        return totalCharge;
+    }
+
+    public void addSource(FieldSource fs){
+        sources.add(fs);
+        //charges.add(new Charge(fs.getCharge(), fs));
+        //totalCharge += fs.getCharge();
+    }
+
+    public void addCharge(Charge c){
+        charges.add(c);
+        totalCharge += c.getCharge();
+    }
+
+    public void removeCharge(FieldSource fs){
+
+    }
+
+    public ArrayList<Charge> getCharges(){
+        return charges;
+    }
+}
