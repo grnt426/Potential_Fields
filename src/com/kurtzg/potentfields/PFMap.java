@@ -126,8 +126,6 @@ public class PFMap {
                 double chargeValue;
                 double dist = computeDistance(r+x, x, c+y, y);
                 chargeValue = (1 - dist / range) * charge;
-                if(chargeValue < 0)
-                    System.out.println("dfdsf");
 
                 // create charge
                 Charge nodeCharge = new Charge(chargeValue, fs);
@@ -161,7 +159,7 @@ public class PFMap {
             for(int j = y-1; j<y+2; ++j){
                 if(i < 0 || i > rows -1 || j < 0 || j > cols - 1)
                     continue;
-                if(nodes.get(i+ " " + j).getTotalCharge() > highest){
+                if(nodes.get(i+ " " + j).getTotalCharge()+ 30 > highest){
                     highest = nodes.get(i+ " " + j).getTotalCharge();
                     loc[0] = i;
                     loc[1] = j;
@@ -205,24 +203,24 @@ public class PFMap {
         // vars
         Dir d = Dir.CENTER;
         int x, y;
-        x = oldx - newx;
-        y = oldy - newy;
+        x = newx - oldx;
+        y = newy - oldy;
         
-        if(x == 0 && y == -1)
+        if(x == 0 && y < 0)
             d = Dir.NORTH;
-        else if(x == 1 && y == -1)
+        else if(x > 0 && y < 0)
             d = Dir.NORTHEAST;
-        else if(x == 1 && y == 0)
+        else if(x > 0 && y == 0)
             d = Dir.EAST;
-        else if(x == 1 && y == 1)
+        else if(x > 0 && y > 0)
             d = Dir.SOUTHEAST;
-        else if(x == 0 && y == 1)
+        else if(x == 0 && y > 0)
             d = Dir.SOUTH;
-        else if(x == -1 && y == 1)
+        else if(x < 0 && y > 0)
             d = Dir.SOUTHWEST;
-        else if(x == -1 && y == 0)
+        else if(x < 0 && y == 0)
             d = Dir.WEST;
-        else if(x == -1 && y == -1)
+        else if(x < 0 && y < 0)
             d = Dir.NORTHWEST;
             
         return d;

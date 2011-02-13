@@ -16,8 +16,8 @@ public class Agent {
         locx = 55;
         locy = 35;
         source = new FieldSource();
-       // source.setCharge(-30);
-        //source.setRange(2);
+        source.setCharge(-30);
+        source.setRange(2);
     }
 
     public Agent(boolean test){
@@ -26,6 +26,8 @@ public class Agent {
         locx = 75;
         locy = 25;
         source = new FieldSource();
+        source.setCharge(-30);
+        source.setRange(2);
     }
 
     public int getBlockX() {

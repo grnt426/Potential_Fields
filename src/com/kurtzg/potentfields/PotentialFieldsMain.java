@@ -149,9 +149,6 @@ public class PotentialFieldsMain {
 
                     int locx = a.getLocX(), locy = a.getLocY();
 
-                    System.out.println(locx + ", " + locy + " | " 
-                            + goalX + ", " + goalY);
-
                     // move our agent by one pixel
                     if(locx < goalX)
                         a.setLocX(locx + 1);
