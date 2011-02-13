@@ -1,7 +1,5 @@
 package com.kurtzg.potentfields;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
-
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +56,39 @@ public class PFMap {
         fs.removeCharges();
     }
 
-    public void moveSource(FieldSource fs){
+    public void moveSource(FieldSource fs, Dir d){
+
+        int xchange = 0, ychange = 0;
+
+        switch(d){
+            case NORTH:
+                ychange = -1;
+                break;
+            case NORTHEAST:
+                xchange = 1;
+                ychange = -1;
+                break;
+            case EAST:
+                xchange = 1;
+                break;
+            case SOUTHEAST:
+                xchange = 1;
+                ychange = 1;
+                break;
+            case SOUTH:
+                ychange = 1;
+                break;
+            case SOUTHWEST:
+                xchange = -1;
+                ychange = 1;
+                break;
+            case WEST:
+                xchange = -1;
+                break;
+            case NORTHWEST:
+                xchange = -1;
+                ychange = -1;
+        }
 
         // move all the charges to their new locations
         for(Charge c : fs.getCharges()){
@@ -68,8 +98,8 @@ public class PFMap {
 
             // move the charge to new location
             int newX, newY;
-            newX = c.getBlockX();
-            newY = c.getBlockY()+1;
+            newX = c.getBlockX()+xchange;
+            newY = c.getBlockY()+ychange;
             c.setBlockLocation(newX, newY);
 
             if(newX > rows-1 || newX < 0 || newY > cols-1 || newY < 0){

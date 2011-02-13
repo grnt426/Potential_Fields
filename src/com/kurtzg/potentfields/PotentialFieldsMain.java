@@ -23,7 +23,7 @@ public class PotentialFieldsMain {
 
         // create some sources
         FieldSource fs1 = new FieldSource("Test");
-        fs1.setCharge(40);
+        fs1.setCharge(50);
         fs1.setRange(35);
         map.createSource(20, 20, fs1);
         FieldSource fs;
@@ -43,6 +43,9 @@ public class PotentialFieldsMain {
         frame.pack();
         frame.setVisible(true);
 
+        /*
+         * The below is used for debugging
+         */
         Scanner s = new Scanner(System.in);
         String str;
         while((str = s.nextLine()) != null){
@@ -50,8 +53,27 @@ public class PotentialFieldsMain {
                 map.removeSource(fs1);
                 p.repaint();
             }
-            else if(str.equals("u")){
-                map.moveSource(fs1);
+            else if(str.substring(0, 3).equals("dir")){
+                Dir d;
+                String dir = str.substring(4, str.length());
+                if(dir.equalsIgnoreCase("UP"))
+                    d = Dir.NORTH;
+                else if(dir.equalsIgnoreCase("NE"))
+                    d = Dir.NORTHEAST;
+                else if(dir.equalsIgnoreCase("RIGHT"))
+                    d = Dir.EAST;
+                else if(dir.equalsIgnoreCase("SE"))
+                    d = Dir.SOUTHEAST;
+                else if(dir.equalsIgnoreCase("DOWN"))
+                    d = Dir.SOUTH;
+                else if(dir.equalsIgnoreCase("SW"))
+                    d = Dir.SOUTHWEST;
+                else if(dir.equalsIgnoreCase("LEFT"))
+                    d = Dir.WEST;
+                else
+                    d = Dir.NORTHWEST;
+
+                map.moveSource(fs1, d);
                 p.repaint();
             }
             else{
