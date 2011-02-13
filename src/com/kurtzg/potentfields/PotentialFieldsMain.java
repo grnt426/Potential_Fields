@@ -22,10 +22,11 @@ public class PotentialFieldsMain {
         PFMap map = new PFMap(rows, cols);
 
         // create some sources
-        FieldSource fs = new FieldSource("Test");
-        fs.setCharge(40);
-        fs.setRange(15);
-        map.createSource(20, 20, fs);
+        FieldSource fs1 = new FieldSource("Test");
+        fs1.setCharge(40);
+        fs1.setRange(10);
+        map.createSource(20, 20, fs1);
+        FieldSource fs;
         fs = new FieldSource("new test");
         fs.setCharge(20);
         fs.setRange(6);
@@ -45,11 +46,15 @@ public class PotentialFieldsMain {
         Scanner s = new Scanner(System.in);
         String str;
         while((str = s.nextLine()) != null){
-            int x, y;
-            String[] coords = str.split(" ");
-            x = Integer.parseInt(coords[0]);
-            y = Integer.parseInt(coords[1]);
-            System.out.println(map.getNode(x, y).getTotalCharge());
+            if(str.equals("r")){
+                map.removeSource(fs1);
+                p.repaint();
+            }
+            else{
+                String[] coords = str.split(" ");
+                System.out.println(map.getNode(coords[0],
+                        coords[1]).getTotalCharge());
+            }
         }
     }
 

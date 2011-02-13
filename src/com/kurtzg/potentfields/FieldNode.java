@@ -25,20 +25,24 @@ public class FieldNode {
 
     public void addSource(FieldSource fs){
         sources.add(fs);
-        //charges.add(new Charge(fs.getCharge(), fs));
-        //totalCharge += fs.getCharge();
     }
 
     public void addCharge(Charge c){
         charges.add(c);
+        c.setNode(this);
         totalCharge += c.getCharge();
     }
 
-    public void removeCharge(FieldSource fs){
-
+    public void removeCharge(Charge c){
+        charges.remove(c);
+        totalCharge -= c.getCharge();
     }
 
     public ArrayList<Charge> getCharges(){
         return charges;
+    }
+
+    public void removeSource(FieldSource fs){
+        sources.remove(fs);
     }
 }

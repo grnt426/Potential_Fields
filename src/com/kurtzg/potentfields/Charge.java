@@ -8,6 +8,7 @@ public class Charge {
     // instance vars
     private double charge;
     private FieldSource source;
+    private FieldNode node;
 
     public Charge(){
         charge = 0.0;
@@ -36,5 +37,13 @@ public class Charge {
 
     public void setSource(FieldSource source) {
         this.source = source;
+    }
+
+    public void setNode(FieldNode fn){
+        node = fn;
+    }
+
+    public void removeSelf(){
+        node.removeCharge(this);
     }
 }

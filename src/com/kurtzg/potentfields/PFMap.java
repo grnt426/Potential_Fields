@@ -34,13 +34,32 @@ public class PFMap {
     }
 
     public FieldNode getNode(int x, int y){
-        return nodes.get(x+" "+y);
+        return getNode(x+"", y+"");
+    }
+
+    public FieldNode getNode(char x, char y){
+        return getNode(x+"", y+"");
+    }
+
+    public FieldNode getNode(String x, String y){
+        return nodes.get(x + " " + y);
+    }
+
+    public void removeSource(FieldSource fs){
+
+        // tell the source to remove itself from the parent node
+        fs.removeSelf();
+
+        // secondly, tell the source to pull its charges from their respective
+        // nodes
+        fs.removeCharges();
     }
 
     public void createSource(int x, int y, FieldSource fs){
 
         // add the source to the location that it spawned at
         nodes.get(x+" "+y).addSource(fs);
+        fs.setFieldNode(nodes.get(x+" "+y));
 
         // vars
         double range = fs.getRange(), charge = fs.getCharge();
@@ -71,12 +90,14 @@ public class PFMap {
                     continue;
 
                 // compute charge
-                double nodeCharge;
+                double chargeValue;
                 double dist = computeDistance(r+x, x, c+y, y);
-                nodeCharge = Math.abs((1 - dist / range) * charge);
+                chargeValue = Math.abs((1 - dist / range) * charge);
 
                 // create charge
-                nodes.get((r+x)+" "+(c+y)).addCharge(new Charge(nodeCharge, fs));
+                Charge nodeCharge = new Charge(chargeValue, fs);
+                nodes.get((r+x)+" "+(c+y)).addCharge(nodeCharge);
+                fs.addChargeNode(nodeCharge);
             }
         }
     }
