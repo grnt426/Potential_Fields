@@ -1,6 +1,5 @@
 package com.kurtzg.potentfields;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,7 +55,7 @@ public class PFMap {
         fs.removeCharges();
     }
 
-    public void moveSource(FieldSource fs, Dir d){
+    private void moveSource(FieldSource fs, Dir d){
 
         int[] vector;
 
@@ -128,7 +127,8 @@ public class PFMap {
                 chargeValue = (1 - dist / range) * charge;
 
                 // create charge
-                Charge nodeCharge = new Charge(chargeValue, fs);
+                Charge nodeCharge = new Charge(chargeValue, fs, new FieldType("GroundUnit"));
+                nodeCharge.addType(new FieldType("Team1"));
                 nodeCharge.setBlockLocation(r+x, c+y);
                 fs.addChargeNode(nodeCharge);
                 
@@ -159,7 +159,7 @@ public class PFMap {
             for(int j = y-1; j<y+2; ++j){
                 if(i < 0 || i > rows -1 || j < 0 || j > cols - 1)
                     continue;
-                if(nodes.get(i+ " " + j).getTotalCharge()+ 30 > highest){
+                if(nodes.get(i+ " " + j).getHighestCharge() > highest){
                     highest = nodes.get(i+ " " + j).getTotalCharge();
                     loc[0] = i;
                     loc[1] = j;

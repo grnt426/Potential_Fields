@@ -1,5 +1,7 @@
 package com.kurtzg.potentfields;
 
+import java.util.ArrayList;
+
 /**
  * Author:      Grant Kurtz
  */
@@ -8,7 +10,8 @@ public class Charge {
     // instance vars
     private double charge;
     private FieldSource source;
-    public FieldNode node;
+    private FieldNode node;
+    private ArrayList<FieldType> types;
     private int blockX, blockY;
 
     public Charge(){
@@ -19,9 +22,11 @@ public class Charge {
         charge = c;
     }
 
-    public Charge(double c, FieldSource s){
+    public Charge(double c, FieldSource s, FieldType ft){
         source = s;
         charge = c;
+        types = new ArrayList<FieldType>();
+        types.add(ft);
     }
 
     public double getCharge() {
@@ -69,5 +74,13 @@ public class Charge {
 
     public void setBlockY(int blockY) {
         this.blockY = blockY;
+    }
+
+    public ArrayList<FieldType> getTypes() {
+        return types;
+    }
+
+    public void addType(FieldType ft){
+        types.add(ft);
     }
 }

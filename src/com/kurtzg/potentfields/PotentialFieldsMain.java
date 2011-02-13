@@ -109,7 +109,7 @@ public class PotentialFieldsMain {
                 else
                     d = Dir.NORTHWEST;
 
-                map.moveSource(fs1, d);
+                //map.moveSource(fs1, d);
                 p.repaint();
             }
             else if(str.substring(0, 4).equals("near")){
