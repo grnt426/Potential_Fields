@@ -1,5 +1,8 @@
 package com.kurtzg.potentfields;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
+
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -55,11 +58,40 @@ public class PFMap {
         fs.removeCharges();
     }
 
+    public void moveSource(FieldSource fs){
+
+        // move all the charges to their new locations
+        for(Charge c : fs.getCharges()){
+
+            // remove the charge from its parent block node
+            c.removeSelf();
+
+            // move the charge to new location
+            int newX, newY;
+            newX = c.getBlockX();
+            newY = c.getBlockY()+1;
+            c.setBlockLocation(newX, newY);
+
+            if(newX > rows-1 || newX < 0 || newY > cols-1 || newY < 0){
+                continue;
+            }
+
+            // update the field node with the new charge
+            nodes.get(newX + " " + newY).addCharge(c);
+        }
+
+        // move the source itself to its new location
+        fs.removeSelf();
+        fs.setBlockLocation(fs.getBlockX(), fs.getBlockY()+1);
+        nodes.get(fs.getBlockX() + " " + fs.getBlockY());
+    }
+
     public void createSource(int x, int y, FieldSource fs){
 
         // add the source to the location that it spawned at
         nodes.get(x+" "+y).addSource(fs);
         fs.setFieldNode(nodes.get(x+" "+y));
+        fs.setBlockLocation(x, y);
 
         // vars
         double range = fs.getRange(), charge = fs.getCharge();
@@ -83,10 +115,9 @@ public class PFMap {
         for(int r = -(int)range; r < range; ++r){
             for(int c = -(int)range; c < range; ++c){
 
-                // check if we are out of range (this is the lazy way to do it
-                // I know)
-                if(Math.abs(r)+Math.abs(c) > range || r+x < xmin || r+x > xmax
-                        || c+y < ymin || c+y > ymax)
+                // make sure the combined values are not over our range
+                // (to make a "circle")
+                if(Math.abs(r)+Math.abs(c) > range)
                     continue;
 
                 // compute charge
@@ -96,8 +127,16 @@ public class PFMap {
 
                 // create charge
                 Charge nodeCharge = new Charge(chargeValue, fs);
-                nodes.get((r+x)+" "+(c+y)).addCharge(nodeCharge);
+                nodeCharge.setBlockLocation(r+x, c+y);
                 fs.addChargeNode(nodeCharge);
+                
+                // check if we are out of range (this is the lazy way to do it
+                // I know)
+                if(r+x < xmin || r+x > xmax || c+y < ymin || c+y > ymax)
+                    continue;
+
+                nodes.get((r+x)+" "+(c+y)).addCharge(nodeCharge);
+
             }
         }
     }

@@ -8,7 +8,8 @@ public class Charge {
     // instance vars
     private double charge;
     private FieldSource source;
-    private FieldNode node;
+    public FieldNode node;
+    private int blockX, blockY;
 
     public Charge(){
         charge = 0.0;
@@ -43,7 +44,30 @@ public class Charge {
         node = fn;
     }
 
+    public void setBlockLocation(int x, int y){
+        blockX = x;
+        blockY = y;
+    }
+
     public void removeSelf(){
-        node.removeCharge(this);
+        if(node != null)
+            node.removeCharge(this);
+        node = null;
+    }
+    
+    public int getBlockX(){
+        return blockX;
+    }
+
+    public int getBlockY(){
+        return blockY;
+    }
+
+    public void setBlockX(int blockX) {
+        this.blockX = blockX;
+    }
+
+    public void setBlockY(int blockY) {
+        this.blockY = blockY;
     }
 }

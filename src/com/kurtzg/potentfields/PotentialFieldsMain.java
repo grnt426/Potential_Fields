@@ -24,7 +24,7 @@ public class PotentialFieldsMain {
         // create some sources
         FieldSource fs1 = new FieldSource("Test");
         fs1.setCharge(40);
-        fs1.setRange(10);
+        fs1.setRange(35);
         map.createSource(20, 20, fs1);
         FieldSource fs;
         fs = new FieldSource("new test");
@@ -48,6 +48,10 @@ public class PotentialFieldsMain {
         while((str = s.nextLine()) != null){
             if(str.equals("r")){
                 map.removeSource(fs1);
+                p.repaint();
+            }
+            else if(str.equals("u")){
+                map.moveSource(fs1);
                 p.repaint();
             }
             else{

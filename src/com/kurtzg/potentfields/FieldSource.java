@@ -11,6 +11,7 @@ public class FieldSource {
     private double charge, range;
     private ArrayList<Charge> charges;
     private FieldNode node;
+    private int blockX, blockY;
 
     public FieldSource(){
         fieldColor = "NoName";
@@ -23,6 +24,10 @@ public class FieldSource {
 
     public void addChargeNode(Charge c){
         charges.add(c);
+    }
+
+    public ArrayList<Charge> getCharges(){
+        return charges;
     }
 
     public void setCharge(double c){
@@ -53,8 +58,25 @@ public class FieldSource {
         node.removeSource(this);
     }
 
+    public void setBlockLocation(int x, int y){
+        blockX = x;
+        blockY = y;
+    }
+    
     public void removeCharges(){
         for(Charge c : charges)
             c.removeSelf();
+    }
+
+    public void removeCharge(Charge c){
+        charges.remove(c);
+    }
+
+    public int getBlockX() {
+        return blockX;
+    }
+
+    public int getBlockY() {
+        return blockY;
     }
 }
