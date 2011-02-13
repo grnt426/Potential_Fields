@@ -11,5 +11,6 @@ public enum Dir{
         SOUTH,
         SOUTHWEST,
         WEST,
-        NORTHWEST
+        NORTHWEST,
+        CENTER
     }

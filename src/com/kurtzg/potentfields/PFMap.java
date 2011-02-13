@@ -58,37 +58,9 @@ public class PFMap {
 
     public void moveSource(FieldSource fs, Dir d){
 
-        int xchange = 0, ychange = 0;
+        int[] vector;
 
-        switch(d){
-            case NORTH:
-                ychange = -1;
-                break;
-            case NORTHEAST:
-                xchange = 1;
-                ychange = -1;
-                break;
-            case EAST:
-                xchange = 1;
-                break;
-            case SOUTHEAST:
-                xchange = 1;
-                ychange = 1;
-                break;
-            case SOUTH:
-                ychange = 1;
-                break;
-            case SOUTHWEST:
-                xchange = -1;
-                ychange = 1;
-                break;
-            case WEST:
-                xchange = -1;
-                break;
-            case NORTHWEST:
-                xchange = -1;
-                ychange = -1;
-        }
+        vector = computeDirection(d);
 
         // move all the charges to their new locations
         for(Charge c : fs.getCharges()){
@@ -98,8 +70,8 @@ public class PFMap {
 
             // move the charge to new location
             int newX, newY;
-            newX = c.getBlockX()+xchange;
-            newY = c.getBlockY()+ychange;
+            newX = c.getBlockX()+vector[0];
+            newY = c.getBlockY()+vector[1];
             c.setBlockLocation(newX, newY);
 
             if(newX > rows-1 || newX < 0 || newY > cols-1 || newY < 0){
@@ -153,7 +125,9 @@ public class PFMap {
                 // compute charge
                 double chargeValue;
                 double dist = computeDistance(r+x, x, c+y, y);
-                chargeValue = Math.abs((1 - dist / range) * charge);
+                chargeValue = (1 - dist / range) * charge;
+                if(chargeValue < 0)
+                    System.out.println("dfdsf");
 
                 // create charge
                 Charge nodeCharge = new Charge(chargeValue, fs);
@@ -171,7 +145,125 @@ public class PFMap {
         }
     }
 
-    public double computeDistance(double x1, double x2, double y1, double y2){
+    public int[] getNextBlock(int x, int y){
+
+        // vars
+        int[] loc = new int[2];
+        double highest = 0;
+
+        // in case all positions around us are 0, set the "next" location to
+        // our current location
+        loc[0] = x;
+        loc[1] = y;
+
+        // search all around us for the highest block
+        for(int i = x-1; i < x+2; ++i){
+            for(int j = y-1; j<y+2; ++j){
+                if(i < 0 || i > rows -1 || j < 0 || j > cols - 1)
+                    continue;
+                if(nodes.get(i+ " " + j).getTotalCharge() > highest){
+                    highest = nodes.get(i+ " " + j).getTotalCharge();
+                    loc[0] = i;
+                    loc[1] = j;
+                }
+            }
+        }
+
+        // set our goal location to the center of the block
+        loc[0] = loc[0]*10 + 5;
+        loc[1] = loc[1]*10 + 5;
+
+        return loc;
+    }
+
+    private double computeDistance(double x1, double x2, double y1, double y2){
         return Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));
+    }
+    
+    public void updateMap(Agent a){
+        
+        // grab the absolute/block location
+        int x = a.getLocX(), y = a.getLocY();
+        int bx = a.getBlockX(), by = a.getBlockY();
+        
+        // remove the last decimal place
+        x = x/10;
+        y = y/10;
+        
+        // check if we are in a different cell-block
+        if(x != bx || y != by){
+            
+            // move the agent's field to the new location
+            moveSource(a.getSource(), computeDirection(bx, by, x, y));
+            a.setBlockX(x);
+            a.setBlockY(y);
+        }
+    }
+    
+    private Dir computeDirection(int oldx, int oldy, int newx, int newy){
+        
+        // vars
+        Dir d = Dir.CENTER;
+        int x, y;
+        x = oldx - newx;
+        y = oldy - newy;
+        
+        if(x == 0 && y == -1)
+            d = Dir.NORTH;
+        else if(x == 1 && y == -1)
+            d = Dir.NORTHEAST;
+        else if(x == 1 && y == 0)
+            d = Dir.EAST;
+        else if(x == 1 && y == 1)
+            d = Dir.SOUTHEAST;
+        else if(x == 0 && y == 1)
+            d = Dir.SOUTH;
+        else if(x == -1 && y == 1)
+            d = Dir.SOUTHWEST;
+        else if(x == -1 && y == 0)
+            d = Dir.WEST;
+        else if(x == -1 && y == -1)
+            d = Dir.NORTHWEST;
+            
+        return d;
+    }
+    
+    private int[] computeDirection(Dir d){
+        int[] vector = new int[2];
+        vector[0] = 0;
+        vector[1] = 0;
+        
+        switch(d){
+            case NORTH:
+                vector[1] = -1;
+                break;
+            case NORTHEAST:
+                vector[0] = 1;
+                vector[1] = -1;
+                break;
+            case EAST:
+                vector[0] = 1;
+                break;
+            case SOUTHEAST:
+                vector[0] = 1;
+                vector[1] = 1;
+                break;
+            case SOUTH:
+                vector[1] = 1;
+                break;
+            case SOUTHWEST:
+                vector[0] = -1;
+                vector[1] = 1;
+                break;
+            case WEST:
+                vector[0] = -1;
+                break;
+            case NORTHWEST:
+                vector[0] = -1;
+                vector[1] = -1;
+                break;
+        }
+        
+        return vector;
     }
 }

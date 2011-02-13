@@ -13,9 +13,11 @@ public class Painter extends JPanel {
     private PFMap pfm;
     private int rows, cols;
     private Dimension size;
+    private ArrayList<Agent> agents;
 
     public Painter(){
         size = new Dimension(400, 400);
+        agents = new ArrayList<Agent>();
     }
 
     public void paint(Graphics g){
@@ -36,12 +38,32 @@ public class Painter extends JPanel {
                 g.fillRect(sx, sy, width, width);
             }
         }
+
+        // draw all our agents
+        for(Agent a : agents){
+
+            // set the color of the agent
+            g.setColor(Color.black);
+
+            // setup vars for drawing
+            int x, y, radius;
+            radius = 4;
+            x = a.getLocX()-2;
+            y = a.getLocY()-2;
+
+            // finally, draw our little agent
+            g.fillOval(x, y, radius, radius);
+        }
     }
 
     public void setPotentialFieldMap(PFMap pfm){
         this.pfm = pfm;
         rows = pfm.getRows();
         cols = pfm.getCols();
+    }
+
+    public void setAgents(ArrayList<Agent> agents){
+        this.agents = agents;
     }
 
     public Dimension getPreferredSize(){

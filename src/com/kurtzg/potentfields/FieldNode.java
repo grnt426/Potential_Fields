@@ -31,6 +31,8 @@ public class FieldNode {
         charges.add(c);
         c.setNode(this);
         totalCharge += c.getCharge();
+        if(totalCharge < 0)
+            totalCharge = 0;
     }
 
     public void removeCharge(Charge c){
