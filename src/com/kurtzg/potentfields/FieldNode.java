@@ -46,6 +46,7 @@ public class FieldNode {
                 highestCharge = add+charge;
                 highestFieldType = t;
             }
+            System.out.println(typeValues.containsKey(t));
             typeValues.put(t, add+charge);
         }
 
@@ -58,7 +59,19 @@ public class FieldNode {
 
     public void removeCharge(Charge c){
         charges.remove(c);
-        totalCharge -= c.getCharge();
+        double charge = c.getCharge();
+        totalCharge -= charge;
+
+        // store charge for all other types
+        for(FieldType t : c.getTypes()){
+            double current = 0;
+            if(typeValues.get(t) != null){
+                current = typeValues.get(t);
+                typeValues.put(t, current-charge);
+            }
+            //recheckHighest();
+
+        }
     }
 
     public ArrayList<Charge> getCharges(){
@@ -66,6 +79,10 @@ public class FieldNode {
     }
 
     public double getHighestCharge(){
+        System.out.println("Values: ");
+        for(Double d : typeValues.values())
+            System.out.println(d);
+
         return highestCharge;
     }
 

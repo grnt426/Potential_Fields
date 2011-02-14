@@ -52,7 +52,7 @@ public class PotentialFieldsMain {
         map.createSource(20, 20, fs1);
         FieldSource fs;
         fs = new FieldSource("new test");
-        fs.setCharge(20);
+        fs.setCharge(51);
         fs.setRange(6);
         map.createSource(10, 10, fs);
 
@@ -148,6 +148,8 @@ public class PotentialFieldsMain {
                         getNewGoalLocation();
 
                     int locx = a.getLocX(), locy = a.getLocY();
+
+//                    System.out.println(goalX + ", " + goalY);
 
                     // move our agent by one pixel
                     if(locx < goalX)

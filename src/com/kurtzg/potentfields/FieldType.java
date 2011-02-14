@@ -18,8 +18,7 @@ public class FieldType implements Comparable<FieldType>{
 
     public boolean equals(Object o){
 
-        if(!(o instanceof FieldType))
-            return false;
+        System.out.print("dfsdf");
 
         FieldType ft = (FieldType) o;
         return ft.toString().equals(name);

@@ -127,7 +127,8 @@ public class PFMap {
                 chargeValue = (1 - dist / range) * charge;
 
                 // create charge
-                Charge nodeCharge = new Charge(chargeValue, fs, new FieldType("GroundUnit"));
+                Charge nodeCharge = new Charge(chargeValue, fs,
+                        new FieldType("GroundUnit"));
                 nodeCharge.addType(new FieldType("Team1"));
                 nodeCharge.setBlockLocation(r+x, c+y);
                 fs.addChargeNode(nodeCharge);
