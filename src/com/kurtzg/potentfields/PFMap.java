@@ -157,10 +157,14 @@ public class PFMap {
         // search all around us for the highest block
         for(int i = x-1; i < x+2; ++i){
             for(int j = y-1; j<y+2; ++j){
+
+                // make sure we are within the bounds of the map
                 if(i < 0 || i > rows -1 || j < 0 || j > cols - 1)
                     continue;
+
+                // otherwise grab the node's greatest charge
                 if(nodes.get(i+ " " + j).getHighestCharge() > highest){
-                    highest = nodes.get(i+ " " + j).getTotalCharge();
+                    highest = nodes.get(i+ " " + j).getHighestCharge();
                     loc[0] = i;
                     loc[1] = j;
                 }
