@@ -26,13 +26,13 @@ public class Painter extends JPanel {
         setBackground(Color.white);
 
         // draw grid
-        int width = 10;
+        int width = 5;
         for(int r = 0; r < rows; ++r){
             for(int c = 0; c < cols; ++c){
                 int sx, sy;
                 FieldNode fn = pfm.getNode(r, c);
-                sx = r*10;
-                sy = c*10;
+                sx = r*width;
+                sy = c*width;
                 int val = (int)(255*(1-fn.getTotalCharge()/100.0));
                 g.setColor(new Color(val, val, 255));
                 g.fillRect(sx, sy, width, width);

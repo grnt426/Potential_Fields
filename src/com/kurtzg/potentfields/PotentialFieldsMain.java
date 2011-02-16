@@ -25,7 +25,7 @@ public class PotentialFieldsMain {
 
         // read in arguments
         // for now, they will be substituted with hard coded values
-        int rows = 40, cols = 40;
+        int rows = 80, cols = 80;
 
         new PotentialFieldsMain(rows, cols);
     }
@@ -38,22 +38,23 @@ public class PotentialFieldsMain {
         // create new map
         map = new PFMap(rows, cols);
         agents = new ArrayList<Agent>();
-        Agent a = new Agent();
-        agents.add(a);
-        map.createSource(a.getBlockX(), a.getBlockY(), a.getSource());
-        a = new Agent(true);
-        agents.add(a);
-        map.createSource(a.getBlockX(), a.getBlockY(), a.getSource());
+
+        // create some agents
+        for(int i = 0; i < 30; ++i){
+            Agent a = new Agent();
+            agents.add(a);
+            map.createSource(a.getBlockX(), a.getBlockY(), a.getSource());
+        }
 
         // create some sources
         FieldSource fs1 = new FieldSource("Test");
-        fs1.setCharge(45);
-        fs1.setRange(45);
+        fs1.setCharge(62);
+        fs1.setRange(100);
         fs1.addType(new FieldType("Team2"));
-        map.createSource(20, 20, fs1);
+        map.createSource(50, 40, fs1);
         FieldSource fs;
         fs = new FieldSource("new test");
-        fs.setCharge(46);
+        fs.setCharge(20);
         fs.setRange(6);
         fs.addType(new FieldType("Team2"));
         map.createSource(10, 10, fs);
@@ -76,10 +77,10 @@ public class PotentialFieldsMain {
         // set our agents moving
         Thread t = new Thread(new frameKeeper());
         t.start();
-        t = new Thread(new agentMover(agents.get(0)));
-        t.start();
-        t = new Thread(new agentMover(agents.get(1)));
-        t.start();
+        for(Agent a : agents){
+            t = new Thread(new agentMover(a));
+            t.start();
+        }
 
         /*
          * The below is used for debugging

@@ -177,8 +177,8 @@ public class PFMap {
         }
 
         // set our goal location to the center of the block
-        loc[0] = loc[0]*10 + 5;
-        loc[1] = loc[1]*10 + 5;
+        loc[0] = loc[0]*5 + 2;
+        loc[1] = loc[1]*5 + 2;
 
         return loc;
     }
@@ -194,8 +194,8 @@ public class PFMap {
         int bx = a.getBlockX(), by = a.getBlockY();
         
         // remove the last decimal place
-        x = x/10;
-        y = y/10;
+        x = x/5;
+        y = y/5;
         
         // check if we are in a different cell-block
         if(x != bx || y != by){
