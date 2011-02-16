@@ -47,13 +47,15 @@ public class PotentialFieldsMain {
 
         // create some sources
         FieldSource fs1 = new FieldSource("Test");
-        fs1.setCharge(50);
+        fs1.setCharge(45);
         fs1.setRange(45);
+        fs1.addType(new FieldType("Team2"));
         map.createSource(20, 20, fs1);
         FieldSource fs;
         fs = new FieldSource("new test");
-        fs.setCharge(51);
+        fs.setCharge(46);
         fs.setRange(6);
+        fs.addType(new FieldType("Team2"));
         map.createSource(10, 10, fs);
 
         // instantiate paint class
@@ -116,8 +118,8 @@ public class PotentialFieldsMain {
                 int x, y;
                 x = Integer.parseInt(str.substring(5, 7));
                 y = Integer.parseInt(str.substring(8, 10));
-                int[] newLoc = map.getNextBlock(x, y);
-                System.out.println("Goto: " + newLoc[0] + ", " + newLoc[1]);
+                //int[] newLoc = map.getNextBlock(x, y);
+                //System.out.println("Goto: " + newLoc[0] + ", " + newLoc[1]);
             }
             else{
                 String[] coords = str.split(" ");
@@ -171,7 +173,7 @@ public class PotentialFieldsMain {
         }
 
         public void getNewGoalLocation(){
-            int[] newloc = map.getNextBlock(a.getBlockX(), a.getBlockY());
+            int[] newloc = map.getNextBlock(a.getBlockX(), a.getBlockY(), a);
             goalX = newloc[0];
             goalY = newloc[1];
         }

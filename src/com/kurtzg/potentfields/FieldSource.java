@@ -1,5 +1,6 @@
 package com.kurtzg.potentfields;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
@@ -10,16 +11,19 @@ public class FieldSource {
     private String fieldColor;
     private double charge, range;
     private ArrayList<Charge> charges;
+    private ArrayList<FieldType> types;
     private FieldNode node;
     private int blockX, blockY;
 
     public FieldSource(){
         fieldColor = "NoName";
         charges = new ArrayList<Charge>();
+        types = new ArrayList<FieldType>();
     }
     public FieldSource(String name){
         fieldColor = name;
         charges = new ArrayList<Charge>();
+        types = new ArrayList<FieldType>();
     }
 
     public void addChargeNode(Charge c){
@@ -70,6 +74,10 @@ public class FieldSource {
             c.removeSelf();
     }
 
+    public void addType(FieldType ft){
+        types.add(ft);
+    }
+
     public void removeCharge(Charge c){
         charges.remove(c);
     }
@@ -80,5 +88,9 @@ public class FieldSource {
 
     public int getBlockY() {
         return blockY;
+    }
+
+    public ArrayList<FieldType> getTypes(){
+        return types;
     }
 }

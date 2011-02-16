@@ -127,10 +127,12 @@ public class PFMap {
                 chargeValue = (1 - dist / range) * charge;
 
                 // create charge
-                Charge nodeCharge = new Charge(chargeValue, fs,
-                        new FieldType("GroundUnit"));
-                nodeCharge.addType(new FieldType("Team1"));
+                Charge nodeCharge = new Charge(chargeValue, fs);
+
+                // add the types from our source
+                nodeCharge.addTypes(fs.getTypes());
                 nodeCharge.setBlockLocation(r+x, c+y);
+
                 fs.addChargeNode(nodeCharge);
                 
                 // check if we are out of range (this is the lazy way to do it
@@ -144,7 +146,7 @@ public class PFMap {
         }
     }
 
-    public int[] getNextBlock(int x, int y){
+    public int[] getNextBlock(int x, int y, Agent a){
 
         // vars
         int[] loc = new int[2];
@@ -164,8 +166,10 @@ public class PFMap {
                     continue;
 
                 // otherwise grab the node's greatest charge
-                if(nodes.get(i+ " " + j).getHighestCharge() > highest){
-                    highest = nodes.get(i+ " " + j).getHighestCharge();
+//                System.out.println("Location Checking ("+ i + ", " + j + "):");
+                double val = nodes.get(i+ " " + j).getHighestCharge(a);
+                if(val > highest){
+                    highest = val;
                     loc[0] = i;
                     loc[1] = j;
                 }

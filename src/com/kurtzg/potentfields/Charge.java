@@ -22,11 +22,10 @@ public class Charge {
         charge = c;
     }
 
-    public Charge(double c, FieldSource s, FieldType ft){
+    public Charge(double c, FieldSource s){
         source = s;
         charge = c;
         types = new ArrayList<FieldType>();
-        types.add(ft);
     }
 
     public double getCharge() {
@@ -82,5 +81,9 @@ public class Charge {
 
     public void addType(FieldType ft){
         types.add(ft);
+    }
+
+    public void addTypes(ArrayList<FieldType> t){
+        types.addAll(t);
     }
 }
