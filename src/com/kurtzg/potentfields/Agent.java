@@ -10,6 +10,10 @@ import java.util.Random;
 
 /**
  * Author:      Grant Kurtz
+ *
+ * Description: Base class necessary for the PFMap class and supporting
+ *              classes to analyze and allow any inheriting classes to interact
+ *              with the generated potential fields.
  */
 public class Agent {
 
@@ -20,20 +24,27 @@ public class Agent {
     private static int ID = 0;
     private HashMap<String, Double> fieldModifiers;
 
+    /*
+     * Default Constructor, initializes an agent in a random location,
+     * provides a field for the agent to repel other objects, and tells the
+     * agent to ignore it's own field
+     */
     public Agent(){
 
         Random generator = new Random();
-
-
         agent_id = ID;
         ID++;
+
+        // location information
         blockX = generator.nextInt(80);
         blockY = generator.nextInt(80);
         locx = blockX*5+2;
         locy = blockY*5+2;
+
+        // setup some sources
         source = new FieldSource("ID:"+agent_id);
         source.setCharge(-10);
-        source.setRange(2);
+        source.setRange(3);
         source.addType(new FieldType("ID:" + agent_id));
         fieldModifiers = new HashMap<String, Double>();
         fieldModifiers.put("ID:"+agent_id, 0.0);

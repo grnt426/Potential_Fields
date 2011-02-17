@@ -4,6 +4,10 @@ import java.util.*;
 
 /**
  * Author:      Grant Kurtz
+ *
+ * Description: A representational cell that contains all the charges applied
+ *              to this cell, the sources stationed here, and a cache of the
+ *              highest charges and highest charge field type.
  */
 public class FieldNode {
 
@@ -14,7 +18,9 @@ public class FieldNode {
     private double totalCharge, highestCharge;
     private FieldType highestFieldType;
 
-    // creates an empty source array
+    /*
+     * Creates an empty source array with no charges, types, etc.
+     */
     public FieldNode(){
         sources = new ArrayList<FieldSource>();
         charges = new ArrayList<Charge>();
@@ -30,29 +36,53 @@ public class FieldNode {
         sources.add(fs);
     }
 
+    /*
+     * Tracks the added charge, and then adds its value to all pertinent field
+     * types.  Also re-caches the highest charge.
+     *
+     * @param       c       The charge object that is being added
+     */
     public void addCharge(Charge c){
+
+        // store our charge, and let the charge know where its stored
         charges.add(c);
         c.setNode(this);
         double charge = c.getCharge();
+
+        // cache the total charge of all types
         totalCharge += charge;
 
 //        System.out.println("Adding Charge with types: " + c.getTypes().toString());
 
-        // store charge for all other types
+        // update the cached result of current charge values for each type this
+        // charge applies to
         for(FieldType t : c.getTypes()){
             double add = 0;
+
+            // check if this field type already exists in this node
             if(typeValues.containsKey(t.toString()))
                 add = typeValues.get(t.toString());
+
+            // check if this field type is the new highest
             if(add+Math.abs(charge) > highestCharge){
                 highestCharge = add+charge;
                 highestFieldType = t;
             }
-//            System.out.println(t.toString());
+
+            // finally, cache this result
             typeValues.put(t.toString(), add+charge);
         }
     }
 
+    /*
+     * Removes the charge from the globally tracked node list, and also
+     * removes its value from all related field types.
+     *
+     * @param       c       The charge object to remove
+     */
     public void removeCharge(Charge c){
+
+        // remove this charge from the globally tracked list
         charges.remove(c);
         double charge = c.getCharge();
         totalCharge -= charge;
@@ -60,6 +90,9 @@ public class FieldNode {
         // unstore charge for all other types
         for(FieldType t : c.getTypes()){
             double current = 0;
+
+            // check if there are types related to our charge that also need
+            // to be removed
             if(typeValues.containsKey(t.toString())){
                 current = typeValues.get(t.toString());
                 typeValues.put(t.toString(), current-charge);
@@ -71,16 +104,19 @@ public class FieldNode {
         return charges;
     }
 
+    /*
+     * Returns the highest cached result for the type of charge with the
+     * largest summed value.
+     *
+     * @return                  the cached value
+     */
     public double getHighestCharge(){
-        System.out.println("Values: ");
-        for(String s : typeValues.keySet())
-            System.out.println(s);
-        for(Double d : typeValues.values())
-            System.out.println(d);
-
         return highestCharge;
     }
 
+    /*
+     * Given a list of modifiers, it recomputes the highest values.
+     */
     public double getHighestCharge(Agent a){
 
         // vars
@@ -88,6 +124,7 @@ public class FieldNode {
         Object[] types = typeValues.keySet().toArray();
         Object[] values = typeValues.values().toArray();
 
+        // loop through all the types and apply the relevant modifier
         for(int i = 0; i < values.length; ++i){
             double val = (Double) values[i];
 
@@ -100,15 +137,11 @@ public class FieldNode {
             if(((String)types[i]).substring(0, 3).equals("ID:"))
                 val = val * 100;
 
-//            System.out.println("Highest Calc: " + types[i] + ": " + val);
-
             // check if this is the highest (or lowest) value
             if(Math.abs(val) > Math.abs(highest))
                 highest = val;
         }
 
-//        System.out.println("Highest Val: " + highest);
-//        System.out.println();
         return highest;
     }
 

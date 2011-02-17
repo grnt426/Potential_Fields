@@ -5,6 +5,12 @@ import java.util.HashMap;
 
 /**
  * Author:      Grant Kurtz
+ *
+ * Description: The mother of classes used to contain the full representation
+ *              of a map, with each cell mapping to a FieldNode, which contains
+ *              lists of charges, sources, and types for those sources.
+ *              Can also compute a cell with the highest charge given a pair
+ *              of coordinates, and create sources with their charges.
  */
 public class PFMap {
 
@@ -12,6 +18,14 @@ public class PFMap {
     private int rows, cols;
     private HashMap<String, FieldNode> nodes;
 
+    /*
+     * Default constructor, initializes the map with empty nodes
+     *
+     * @param       rows        the number of horizontal cells contained in
+     *                          the map
+     * @param       cols        the number of vertical cells contained in the
+     *                          map
+     */
     public PFMap(int rows, int cols){
         this.rows = rows;
         this.cols = cols;
@@ -33,6 +47,10 @@ public class PFMap {
         return cols;
     }
 
+    /*
+     * The below three functions (all of type getNode()) are convenience
+     * functions
+     */
     public FieldNode getNode(int x, int y){
         return getNode(x+"", y+"");
     }
@@ -45,6 +63,12 @@ public class PFMap {
         return nodes.get(x + " " + y);
     }
 
+    /*
+     * Tells the source and all its charges to remove themselves from their
+     * respective nodes
+     *
+     * @param       fs          the source to remove
+     */
     public void removeSource(FieldSource fs){
 
         // tell the source to remove itself from the parent node
@@ -55,10 +79,14 @@ public class PFMap {
         fs.removeCharges();
     }
 
+    /*
+     * Handles moving a given source one cell in the given direction
+     * to cells directly adjacent to the cell
+     */
     private void moveSource(FieldSource fs, Dir d){
 
+        // vars
         int[] vector;
-
         vector = computeDirection(d);
 
         // move all the charges to their new locations
@@ -73,6 +101,7 @@ public class PFMap {
             newY = c.getBlockY()+vector[1];
             c.setBlockLocation(newX, newY);
 
+            // make sure the cell is still within the bounds of the map
             if(newX > rows-1 || newX < 0 || newY > cols-1 || newY < 0){
                 continue;
             }
@@ -84,9 +113,18 @@ public class PFMap {
         // move the source itself to its new location
         fs.removeSelf();
         fs.setBlockLocation(fs.getBlockX(), fs.getBlockY()+1);
-        nodes.get(fs.getBlockX() + " " + fs.getBlockY());
     }
 
+    /*
+     * Given a field source and a location, this function will create all the
+     * needed charges for the source and add them to their respective fieldnode
+     * locations.
+     *
+     * @param       x       the x location for the source
+     * @param       y       the y location for the source
+     * @param       fs      the source field that will have its charges
+      *                     generated
+     */
     public void createSource(int x, int y, FieldSource fs){
 
         // add the source to the location that it spawned at
@@ -133,19 +171,32 @@ public class PFMap {
                 nodeCharge.addTypes(fs.getTypes());
                 nodeCharge.setBlockLocation(r+x, c+y);
 
+                // add the child charge to its parent source
                 fs.addChargeNode(nodeCharge);
                 
-                // check if we are out of range (this is the lazy way to do it
-                // I know)
+                // check if we are still within the constraints of the map
                 if(r+x < xmin || r+x > xmax || c+y < ymin || c+y > ymax)
                     continue;
 
+                // add the charge to the map
                 nodes.get((r+x)+" "+(c+y)).addCharge(nodeCharge);
 
             }
         }
     }
 
+    /*
+     * Given a location (necessary?) and an agent, this function will return
+     * back a set of coordinates at the center of the highest charged cell
+     * directly adjacent to this cell.
+     *
+     * @param       x       the x-coordinate for the current agent
+     * @param       y       the y-coordinate for the current agent
+     * @param       a       the agent being moved
+     *
+     * @returns             the center of the coordinates of the cell block
+     *                      the agent should move to
+     */
     public int[] getNextBlock(int x, int y, Agent a){
 
         // vars
@@ -166,7 +217,6 @@ public class PFMap {
                     continue;
 
                 // otherwise grab the node's greatest charge
-//                System.out.println("Location Checking ("+ i + ", " + j + "):");
                 double val = nodes.get(i+ " " + j).getHighestCharge(a);
                 if(val > highest){
                     highest = val;
@@ -183,10 +233,26 @@ public class PFMap {
         return loc;
     }
 
+    /*
+     * A convenience function for computing the distance function,
+     * √((x1 - x2)² + (y1 - y2)²)
+     *
+     * @param       x1          the first coordinate pair's x-location
+     * @param       x2          the second coordinate pair's x-location
+     * @param       y1          the first coordinate pair's y-location
+     * @param       y2          the second coordinate pair's y-location
+     *
+     * @returns                 the euclidean distance between these this
+     *                          coordinate pair
+     */
     private double computeDistance(double x1, double x2, double y1, double y2){
         return Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));
     }
-    
+
+    /*
+     * Whenever an agent/source moves and wants a FieldSource to be moved
+     * with it (as necessary), this function should be called.
+     */
     public void updateMap(Agent a){
         
         // grab the absolute/block location
@@ -197,7 +263,8 @@ public class PFMap {
         x = x/5;
         y = y/5;
         
-        // check if we are in a different cell-block
+        // check if we are in a different cell-block, otherwise do not "move"
+        // everything
         if(x != bx || y != by){
             
             // move the agent's field to the new location
@@ -206,7 +273,20 @@ public class PFMap {
             a.setBlockY(y);
         }
     }
-    
+
+    /*
+     * Given two sets of coordinates, a difference will be performed on the
+     * coordinates to indicate which "direction" the agent moved, with the
+     * corresponding enum Dir returned
+     *
+     * @param       oldx        the previous x-axis location of the agent
+     * @param       oldy        the previous y-axis location of the agent
+     * @param       newx        the current x-axis location of the agent
+     * @param       newy        the current y-axis location of the agent
+     *
+     * @returns                 an enum direction representational of the
+     *                          direction moved
+     */
     private Dir computeDirection(int oldx, int oldy, int newx, int newy){
         
         // vars
@@ -234,7 +314,20 @@ public class PFMap {
             
         return d;
     }
-    
+
+    /*
+     * Given an enum direction, converts to an array that can be used to
+     * directly add/subtract to the coordinates of an agent to "move" in the
+     * desired direction.
+     *
+     * @param       d       the enum direction to get the coordinate
+     *                      equivalent of
+     *
+     * @returns             an array with the first element containing the
+     *                      modifier for the x-coordinate, and the second
+     *                      element containing the modifier for the
+     *                      y-coordinate
+     */
     private int[] computeDirection(Dir d){
         int[] vector = new int[2];
         vector[0] = 0;

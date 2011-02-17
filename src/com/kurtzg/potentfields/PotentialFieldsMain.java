@@ -10,8 +10,8 @@ import java.util.Scanner;
 *
 * Author:      Grant Kurtz
 *
-* Description: Initializes the Potential Field Map and supporting classes
-*              through command line arguments.
+* Description: Initializes the Potential Field Map, test Agents, a painter
+*               class for debugging the field, and other classes for testing
 */
 public class PotentialFieldsMain {
 
@@ -32,6 +32,10 @@ public class PotentialFieldsMain {
 
     /*
      * Default Constructor
+     *
+     * @param:      rows        number of PF cells horizontally in the whole
+     *                          map
+     * @param:      cols        number of PF cells vertically in the whole map
      */
     public PotentialFieldsMain(int rows, int cols){
 
@@ -40,7 +44,7 @@ public class PotentialFieldsMain {
         agents = new ArrayList<Agent>();
 
         // create some agents
-        for(int i = 0; i < 30; ++i){
+        for(int i = 0; i < 60; ++i){
             Agent a = new Agent();
             agents.add(a);
             map.createSource(a.getBlockX(), a.getBlockY(), a.getSource());
@@ -130,12 +134,18 @@ public class PotentialFieldsMain {
         }
     }
 
+    /*
+     * A test class used for moving agents across the field
+     */
     public class agentMover implements Runnable{
 
         // vars
         Agent a;
         int goalX, goalY;
 
+        /*
+         * Default constructor
+         */
         public agentMover(Agent a){
             this.a = a;
             goalX = a.getLocX();
@@ -145,34 +155,41 @@ public class PotentialFieldsMain {
         public void run(){
 
             while(true){
+
+                // artificially slow the agent so we can see what is going on
                 try{
                     Thread.sleep(100);
-                    if(a.getLocX() == goalX && a.getLocY() == goalY)
-                        getNewGoalLocation();
-
-                    int locx = a.getLocX(), locy = a.getLocY();
-
-//                    System.out.println(goalX + ", " + goalY);
-
-                    // move our agent by one pixel
-                    if(locx < goalX)
-                        a.setLocX(locx + 1);
-                    else if(locx > goalX)
-                        a.setLocX(locx - 1);
-                    if(locy < goalY)
-                        a.setLocY(locy + 1);
-                    else if(locy > goalY)
-                        a.setLocY(locy - 1);
-
-                    // update our potential field (as needed)
-                    map.updateMap(a);
                 }
                 catch(InterruptedException ie){
 
                 }
+
+                // check if we have reached the goal
+                if(a.getLocX() == goalX && a.getLocY() == goalY)
+                        getNewGoalLocation();
+
+                // grab the agent's current location
+                int locx = a.getLocX(), locy = a.getLocY();
+
+                // move our agent by one pixel along the x/y axis
+                if(locx < goalX)
+                    a.setLocX(locx + 1);
+                else if(locx > goalX)
+                    a.setLocX(locx - 1);
+                if(locy < goalY)
+                    a.setLocY(locy + 1);
+                else if(locy > goalY)
+                    a.setLocY(locy - 1);
+
+                // update our potential field (as needed)
+                map.updateMap(a);
             }
         }
 
+        /*
+         * Asks the PFMap class for information on where this agent should
+         * move to next
+         */
         public void getNewGoalLocation(){
             int[] newloc = map.getNextBlock(a.getBlockX(), a.getBlockY(), a);
             goalX = newloc[0];
@@ -180,6 +197,9 @@ public class PotentialFieldsMain {
         }
     }
 
+    /*
+     * Just asks the painter class to repaint every ~24FPS
+     */
     public class frameKeeper implements Runnable{
 
         public void run(){

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * Author:      Grant Kurtz
+ *
+ * Description: Support class used to paint the Potential Field Map generated
+ *              by all sources
  */
 public class Painter extends JPanel {
 
@@ -15,6 +18,9 @@ public class Painter extends JPanel {
     private Dimension size;
     private ArrayList<Agent> agents;
 
+    /*
+     * Default constructor, just initializes the panels size
+     */
     public Painter(){
         size = new Dimension(400, 400);
         agents = new ArrayList<Agent>();
@@ -22,6 +28,7 @@ public class Painter extends JPanel {
 
     public void paint(Graphics g){
 
+        // let the panel have a reference of our painted picture
         super.paintComponent(g);
         setBackground(Color.white);
 
@@ -29,12 +36,20 @@ public class Painter extends JPanel {
         int width = 5;
         for(int r = 0; r < rows; ++r){
             for(int c = 0; c < cols; ++c){
+
+                // vars
                 int sx, sy;
                 FieldNode fn = pfm.getNode(r, c);
                 sx = r*width;
                 sy = c*width;
+
+                // compute the charge value as a percentage
                 int val = (int)(255*(1-fn.getTotalCharge()/100.0));
+
+                // compute the charge
                 g.setColor(new Color(val, val, 255));
+
+                // draw the cell
                 g.fillRect(sx, sy, width, width);
             }
         }
@@ -56,6 +71,11 @@ public class Painter extends JPanel {
         }
     }
 
+    /*
+     * Stores a reference to the map and the rows/cols the map represents
+     *
+     * @param       pfm         the map itself
+     */
     public void setPotentialFieldMap(PFMap pfm){
         this.pfm = pfm;
         rows = pfm.getRows();

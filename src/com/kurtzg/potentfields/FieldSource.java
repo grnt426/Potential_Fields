@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 public class FieldSource {
 
+    // vars
     private String fieldColor;
     private double charge, range;
     private ArrayList<Charge> charges;
@@ -15,6 +16,9 @@ public class FieldSource {
     private FieldNode node;
     private int blockX, blockY;
 
+    /*
+     * Default Constructor
+     */
     public FieldSource(){
         fieldColor = "NoName";
         charges = new ArrayList<Charge>();
