@@ -25,7 +25,7 @@ public class PotentialFieldsMain {
 
         // read in arguments
         // for now, they will be substituted with hard coded values
-        int rows = 80, cols = 80;
+        int rows = 40, cols = 40;
 
         new PotentialFieldsMain(rows, cols);
     }
@@ -44,24 +44,27 @@ public class PotentialFieldsMain {
         agents = new ArrayList<Agent>();
 
         // create some agents
-        for(int i = 0; i < 60; ++i){
+        for(int i = 0; i < 20; ++i){
             Agent a = new Agent();
             agents.add(a);
-            map.createSource(a.getBlockX(), a.getBlockY(), a.getSource());
+            map.addAgent(a);
         }
 
         // create some sources
         FieldSource fs1 = new FieldSource("Test");
         fs1.setCharge(62);
-        fs1.setRange(100);
+        fs1.setRange(40);
+        fs1.setBlockLocation(20, 20);
         fs1.addType(new FieldType("Team2"));
-        map.createSource(50, 40, fs1);
+        //Agent a = new Agent()
+        map.createSource(fs1);
         FieldSource fs;
         fs = new FieldSource("new test");
+        fs.setBlockLocation(7, 8);
         fs.setCharge(20);
         fs.setRange(6);
         fs.addType(new FieldType("Team2"));
-        map.createSource(10, 10, fs);
+        map.createSource(fs);
 
         // instantiate paint class
         p = new Painter();
@@ -93,7 +96,7 @@ public class PotentialFieldsMain {
         String str;
         while((str = s.nextLine()) != null){
             if(str.equals("r")){
-                map.removeSource(fs1);
+                //map.removeSource(fs1);
                 p.repaint();
             }
             else if(str.substring(0, 3).equals("dir")){

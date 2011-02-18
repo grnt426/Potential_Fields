@@ -10,6 +10,7 @@ public class FieldType implements Comparable<FieldType>{
 
     // vars
     private String name;
+    private int range;
 
     public FieldType(String name){
         this.name = name;
@@ -17,6 +18,14 @@ public class FieldType implements Comparable<FieldType>{
 
     public String toString(){
         return name;
+    }
+
+    public int getRange(){
+        return range;
+    }
+
+    public void setRange(int r){
+        range = r;
     }
 
     /*

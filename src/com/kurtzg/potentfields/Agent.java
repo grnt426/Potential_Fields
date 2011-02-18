@@ -31,21 +31,43 @@ public class Agent {
      */
     public Agent(){
 
+        // vars
         Random generator = new Random();
+
+        // UID info
         agent_id = ID;
         ID++;
 
         // location information
-        blockX = generator.nextInt(80);
-        blockY = generator.nextInt(80);
-        locx = blockX*5+2;
-        locy = blockY*5+2;
+        blockX = generator.nextInt(40);
+        blockY = generator.nextInt(40);
+        locx = blockX*10+5;
+        locy = blockY*10+5;
 
         // setup some sources
         source = new FieldSource("ID:"+agent_id);
         source.setCharge(-10);
-        source.setRange(3);
+        source.setRange(2);
         source.addType(new FieldType("ID:" + agent_id));
+        source.setBlockLocation(blockX, blockY);
+        fieldModifiers = new HashMap<String, Double>();
+        fieldModifiers.put("ID:"+agent_id, 0.0);
+    }
+
+    public Agent(int x, int y){
+
+        // determine block location
+        blockX = x/10+5;
+        blockY = y/10+5;
+        this.locx = x;
+        this.locy = y;
+
+        // setup some sources
+        source = new FieldSource("ID:"+agent_id);
+        source.setCharge(-10);
+        source.setRange(2);
+        source.addType(new FieldType("ID:" + agent_id));
+        source.setBlockLocation(blockX, blockY);
         fieldModifiers = new HashMap<String, Double>();
         fieldModifiers.put("ID:"+agent_id, 0.0);
     }
@@ -86,7 +108,15 @@ public class Agent {
         return source;
     }
 
+    public void setSource(FieldSource fs){
+        this.source = fs;
+    }
+
     public HashMap<String, Double> getFieldModifiers(){
         return fieldModifiers;
+    }
+
+    public void addType(Charge c, int r, FieldType ft){
+        
     }
 }

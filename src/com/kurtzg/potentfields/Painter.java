@@ -33,7 +33,7 @@ public class Painter extends JPanel {
         setBackground(Color.white);
 
         // draw grid
-        int width = 5;
+        int width = 10;
         for(int r = 0; r < rows; ++r){
             for(int c = 0; c < cols; ++c){
 

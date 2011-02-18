@@ -17,6 +17,7 @@ public class PFMap {
     // instance variables
     private int rows, cols;
     private HashMap<String, FieldNode> nodes;
+    private ArrayList<Agent> agents;
 
     /*
      * Default constructor, initializes the map with empty nodes
@@ -30,6 +31,7 @@ public class PFMap {
         this.rows = rows;
         this.cols = cols;
         nodes = new HashMap<String, FieldNode>();
+        agents = new ArrayList<Agent>();
 
         // fill the map with empty nodes
         for(int r = 0; r < rows; ++r){
@@ -69,7 +71,7 @@ public class PFMap {
      *
      * @param       fs          the source to remove
      */
-    public void removeSource(FieldSource fs){
+    private void removeSource(FieldSource fs){
 
         // tell the source to remove itself from the parent node
         fs.removeSelf();
@@ -112,7 +114,7 @@ public class PFMap {
 
         // move the source itself to its new location
         fs.removeSelf();
-        fs.setBlockLocation(fs.getBlockX(), fs.getBlockY()+1);
+        fs.setBlockLocation(fs.getBlockX(), fs.getBlockY() + 1);
     }
 
     /*
@@ -125,9 +127,10 @@ public class PFMap {
      * @param       fs      the source field that will have its charges
       *                     generated
      */
-    public void createSource(int x, int y, FieldSource fs){
+    public void createSource(FieldSource fs){
 
         // add the source to the location that it spawned at
+        int x = fs.getBlockX(), y = fs.getBlockY();
         nodes.get(x+" "+y).addSource(fs);
         fs.setFieldNode(nodes.get(x+" "+y));
         fs.setBlockLocation(x, y);
@@ -169,7 +172,7 @@ public class PFMap {
 
                 // add the types from our source
                 nodeCharge.addTypes(fs.getTypes());
-                nodeCharge.setBlockLocation(r+x, c+y);
+                nodeCharge.setBlockLocation(r + x, c + y);
 
                 // add the child charge to its parent source
                 fs.addChargeNode(nodeCharge);
@@ -183,6 +186,13 @@ public class PFMap {
 
             }
         }
+    }
+
+    public void addAgent(Agent a){
+        agents.add(a);
+
+        // create the necessary sources/charges for the agent
+        createSource(a.getSource());
     }
 
     /*
@@ -227,8 +237,8 @@ public class PFMap {
         }
 
         // set our goal location to the center of the block
-        loc[0] = loc[0]*5 + 2;
-        loc[1] = loc[1]*5 + 2;
+        loc[0] = loc[0]*10 + 5;
+        loc[1] = loc[1]*10 + 5;
 
         return loc;
     }
@@ -260,8 +270,8 @@ public class PFMap {
         int bx = a.getBlockX(), by = a.getBlockY();
         
         // remove the last decimal place
-        x = x/5;
-        y = y/5;
+        x = x/10;
+        y = y/10;
         
         // check if we are in a different cell-block, otherwise do not "move"
         // everything
