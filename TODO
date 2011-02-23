@@ -1,0 +1,14 @@
+########################
+Immediate TODO:
+        > Allow the creation of static objects
+        > Allow weights to be applied based on distance (for ranged units)
+        > Finish cleaning up the PFMap class (mostly method signatures)
+
+########################
+Eventual Updates:
+        > Optimize, Optimize, Optimize
+        > Fix the weird bug with Java not using my FieldType .equals() method
+            for key comparison (currently, the FieldType's name is stored as
+            the key directly)
+        > Fix the ConcurrentModificationException as mentioned in the
+            getHighestCharge() method of the FieldNode class

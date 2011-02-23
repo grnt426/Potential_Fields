@@ -47,7 +47,7 @@ public class Agent {
         // setup some sources
         source = new FieldSource("ID:"+agent_id);
         source.setCharge(-10);
-        source.setRange(2);
+        source.setRange(3);
         source.addType(new FieldType("ID:" + agent_id));
         source.setBlockLocation(blockX, blockY);
         fieldModifiers = new HashMap<String, Double>();
@@ -116,7 +116,7 @@ public class Agent {
         return fieldModifiers;
     }
 
-    public void addType(Charge c, int r, FieldType ft){
+    public void addType(Charge c, FieldType ft){
         
     }
 }

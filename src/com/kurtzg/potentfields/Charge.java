@@ -1,6 +1,7 @@
 package com.kurtzg.potentfields;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Author:      Grant Kurtz
@@ -15,7 +16,9 @@ public class Charge {
     private FieldSource source;
     private FieldNode node;
     private ArrayList<FieldType> types;
+    private HashMap<String, Double> distancesToSources;
     private int blockX, blockY;
+
 
     public Charge(){
         charge = 0.0;

@@ -84,6 +84,10 @@ public class PFMap {
     /*
      * Handles moving a given source one cell in the given direction
      * to cells directly adjacent to the cell
+     *
+     * @param:      fs          the source, and children charges, to move
+     * @param:      d           the direction (by one cell block) to move the
+     *                          source to
      */
     private void moveSource(FieldSource fs, Dir d){
 
@@ -114,7 +118,7 @@ public class PFMap {
 
         // move the source itself to its new location
         fs.removeSelf();
-        fs.setBlockLocation(fs.getBlockX(), fs.getBlockY() + 1);
+        fs.setBlockLocation(fs.getBlockX()+vector[0], fs.getBlockY()+vector[1]);
     }
 
     /*
@@ -140,6 +144,10 @@ public class PFMap {
         int xmin, xmax, ymin, ymax;
 
         // compute min/max range for affect
+        // really, I have had this code here for this long and I haven't
+        // thought of a better way to do it? Ternary operators are torture
+        // to those not the original writer...so don't do that, future
+        // maintainer (hint hint, it will be me)
         xmin = (int)(x-range);
         ymin = (int)(y-range);
         xmax = (int)(x+range);
@@ -159,8 +167,11 @@ public class PFMap {
 
                 // make sure the combined values are not over our range
                 // (to make a "circle")
-                if(Math.abs(r)+Math.abs(c) > range)
-                    continue;
+                if(computeDistance(r+x, x, c+y, y) > range){
+
+                    // this allows us to skip over a lot of range checking
+                    c += (Math.abs(r)+Math.abs(c)) - range;
+                }
 
                 // compute charge
                 double chargeValue;
@@ -196,22 +207,21 @@ public class PFMap {
     }
 
     /*
-     * Given a location (necessary?) and an agent, this function will return
-     * back a set of coordinates at the center of the highest charged cell
+     * Given an agent this function will return back a set of
+     * coordinates at the center of the highest charged cell
      * directly adjacent to this cell.
      *
-     * @param       x       the x-coordinate for the current agent
-     * @param       y       the y-coordinate for the current agent
      * @param       a       the agent being moved
      *
      * @returns             the center of the coordinates of the cell block
      *                      the agent should move to
      */
-    public int[] getNextBlock(int x, int y, Agent a){
+    public int[] getNextBlock(Agent a){
 
         // vars
         int[] loc = new int[2];
         double highest = 0;
+        int x = a.getBlockX(), y = a.getBlockY();
 
         // in case all positions around us are 0, set the "next" location to
         // our current location
@@ -244,7 +254,7 @@ public class PFMap {
     }
 
     /*
-     * A convenience function for computing the distance function,
+     * A convenience method for computing the distance function,
      * √((x1 - x2)² + (y1 - y2)²)
      *
      * @param       x1          the first coordinate pair's x-location
@@ -252,8 +262,8 @@ public class PFMap {
      * @param       y1          the first coordinate pair's y-location
      * @param       y2          the second coordinate pair's y-location
      *
-     * @returns                 the euclidean distance between these this
-     *                          coordinate pair
+     * @returns                 the euclidean distance between these
+     *                          coordinate pairs
      */
     private double computeDistance(double x1, double x2, double y1, double y2){
         return Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));

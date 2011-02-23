@@ -52,8 +52,6 @@ public class FieldNode {
         // cache the total charge of all types
         totalCharge += charge;
 
-//        System.out.println("Adding Charge with types: " + c.getTypes().toString());
-
         // update the cached result of current charge values for each type this
         // charge applies to
         for(FieldType t : c.getTypes()){
@@ -108,7 +106,7 @@ public class FieldNode {
      * Returns the highest cached result for the type of charge with the
      * largest summed value.
      *
-     * @return                  the cached value
+     * @return                  the cached value containing the highest charge
      */
     public double getHighestCharge(){
         return highestCharge;
@@ -116,6 +114,11 @@ public class FieldNode {
 
     /*
      * Given a list of modifiers, it recomputes the highest values.
+     * Please, fix this....this is a horrible mess
+     * Also, on rare occasions ConcurrentModificationExceptions occur when
+     * accessing the keySet() values.
+     *
+     * @param:      a       The agent searching for the next highest charge
      */
     public double getHighestCharge(Agent a){
 

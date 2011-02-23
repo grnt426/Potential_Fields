@@ -1,7 +1,5 @@
 package com.kurtzg.potentfields;
 
-import sun.nio.ch.Interruptible;
-
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -194,7 +192,7 @@ public class PotentialFieldsMain {
          * move to next
          */
         public void getNewGoalLocation(){
-            int[] newloc = map.getNextBlock(a.getBlockX(), a.getBlockY(), a);
+            int[] newloc = map.getNextBlock(a);
             goalX = newloc[0];
             goalY = newloc[1];
         }

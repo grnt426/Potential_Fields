@@ -15,6 +15,10 @@ Description:    Agents employ path-finding techniques on their own by having
                 affect of these implementations.
                 The particular goal of the agents is to destroy a given target
                 with ranged weaponry (lasers).
+                Agents and Objects can give off multiple fields, and agents can
+                traverse over these fields by using a series of "weights" that
+                help adjust the agent's behavior while under the influence of
+                multiple targets.
 
 ########################
 Technical Details of Algorithm:
@@ -28,5 +32,3 @@ Technical Details of Algorithm:
                 backtracking, pheromone trails, or other aids aside from their
                 own small negative field to avoid collision with other
                 units (allies).
-This file was modified by IntelliJ IDEA 10.0.1 for binding GitHub repository
-This file was modified by IntelliJ IDEA 10.0.1 for binding GitHub repository
