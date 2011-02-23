@@ -170,7 +170,8 @@ public class PFMap {
                 if(computeDistance(r+x, x, c+y, y) > range){
 
                     // this allows us to skip over a lot of range checking
-                    c += (Math.abs(r)+Math.abs(c)) - range;
+                    c += (Math.abs(r)+Math.abs(c)) - range + 1;
+                    continue;
                 }
 
                 // compute charge
