@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class Charge {
 
     // instance vars
-    private double charge;
+    private double charge, dist;
     private FieldSource source;
     private FieldNode node;
     private ArrayList<FieldType> types;
@@ -36,6 +36,14 @@ public class Charge {
 
     public double getCharge() {
         return charge;
+    }
+
+    public double getDistance(){
+        return dist;
+    }
+
+    public void setDistance(double dist){
+        this.dist = dist;
     }
 
     public void setCharge(double charge) {

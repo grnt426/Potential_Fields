@@ -124,6 +124,10 @@ public class FieldNode {
 
         // vars
         double highest = 0;
+
+
+        /*
+        // TODO: consider synchronizing on this objects
         Object[] types = typeValues.keySet().toArray();
         Object[] values = typeValues.values().toArray();
 
@@ -135,14 +139,24 @@ public class FieldNode {
             if(a.getFieldModifiers().containsKey((String)types[i]))
                 val = val * a.getFieldModifiers().get((String)types[i]);
 
-            // do a special check
-            // TODO: in the future, don't do this
+            // do a special check for ourselves
+            // TODO: in the future, don't do this (not very flexible)
             if(((String)types[i]).substring(0, 3).equals("ID:"))
                 val = val * 100;
 
             // check if this is the highest (or lowest) value
             if(Math.abs(val) > Math.abs(highest))
                 highest = val;
+        }
+
+        */
+
+        // loop through all the charges and obtain their modified values
+        for(Charge c : charges){
+
+            double val;
+
+
         }
 
         return highest;

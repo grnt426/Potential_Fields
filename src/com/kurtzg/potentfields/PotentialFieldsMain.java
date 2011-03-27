@@ -61,7 +61,9 @@ public class PotentialFieldsMain {
         fs.setBlockLocation(7, 8);
         fs.setCharge(20);
         fs.setRange(6);
-        fs.addType(new FieldType("Team2"));
+        FieldType ft = new FieldType("Team2");
+        ft.setRange(6);
+        fs.addType(ft);
         map.createSource(fs);
 
         // instantiate paint class
