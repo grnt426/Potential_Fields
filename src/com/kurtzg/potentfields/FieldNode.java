@@ -28,6 +28,10 @@ public class FieldNode {
         totalCharge = 0.0;
     }
 
+    /*
+     * Returns the total (summed) default charge of all fields on this node,
+     * also guarantees the value is non-negative
+     */
     public double getTotalCharge(){
         return totalCharge < 0 ? 0 : totalCharge;
     }
@@ -156,7 +160,7 @@ public class FieldNode {
 
             double val;
 
-
+            
         }
 
         return highest;
